@@ -162,7 +162,7 @@ const MainScreen = () => {
 
         <View style={styles.inputContainer}>
           <TextInput
-            style={styles.destinationInput}
+            style={styles.locationInput}
             value={destination}
             onChangeText={setDestination}
             placeholder="Enter Your Destination"
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   locationInput: {
     flex: 1,
     padding: 12,
-    color: "#4CAF50",
+    color: "#2C3E50",
   },
   destinationInput: {
     flex: 1,
