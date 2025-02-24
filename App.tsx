@@ -31,10 +31,22 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthentication }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = () => {
-    // Add actual authentication logic here
-    onAuthentication(); // Transition to main screen
-  };
+  const [error, setError] = useState("");
+
+const handleSubmit = () => {
+
+    // Regular expression for valid email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+  
+
+  setError(""); // Clear error if validation passes
+  onAuthentication(); // Proceed with authentication
+};
 
   return (
     <View style={styles.authContainer}>
@@ -42,26 +54,28 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthentication }) => {
       <View style={styles.authForm}>
         <Text style={styles.headerText}>{isLogin ? "Login" : "Sign Up"}</Text>
         <Text style={styles.subText}>
-          {isLogin ? "Sign in to continue" : "Create a new account"}
+          {isLogin ? "Log in to continue" : "Create a new account"}
         </Text>
 
-        <TextInput
+        {!isLogin && (
+          <TextInput
           style={styles.input}
           placeholder="Name"
           value={name}
           onChangeText={setName}
           placeholderTextColor="#7D7D7D"
         />
-        
-        {!isLogin && (
-          <TextInput
+        )}
+
+        <TextInput
             style={styles.input}
             placeholder="Email"
             value={email}
             onChangeText={setEmail}
             placeholderTextColor="#7D7D7D"
           />
-        )}
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        
 
         <TextInput
           style={styles.input}
@@ -146,15 +160,19 @@ const MainScreen = () => {
           />
         </View>
 
-        <View style={styles.inputContainerDark}>
+        <View style={styles.inputContainer}>
           <TextInput
             style={styles.destinationInput}
             value={destination}
             onChangeText={setDestination}
             placeholder="Enter Your Destination"
-            placeholderTextColor="#FFFFFF"
+            placeholderTextColor="#7D7D7D"
           />
         </View>
+        
+        <TouchableOpacity style={styles.authButton}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
 
         <Animated.View
           style={{
@@ -310,6 +328,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 10,
   },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    marginBottom: 10,
+  }
 });
 
 export default App;
