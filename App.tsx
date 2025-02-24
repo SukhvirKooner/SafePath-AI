@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Animated,
+  Image
 } from "react-native";
 
 interface AuthFormProps {
@@ -50,6 +51,7 @@ const handleSubmit = () => {
 
   return (
     <View style={styles.authContainer}>
+      <Image source={require("./assets/logo.png")} style={styles.logo} />
       <Text style={styles.title}>SafePath AI</Text>
       <View style={styles.authForm}>
         <Text style={styles.headerText}>{isLogin ? "Login" : "Sign Up"}</Text>
@@ -135,6 +137,7 @@ const MainScreen = () => {
 
   return (
     <View style={styles.mainContainer}>
+      <Image source={require("./assets/logo.png")} style={styles.logo} />
       <Animated.View
         style={[
           styles.box,
@@ -332,6 +335,11 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 14,
     marginBottom: 10,
+  },
+  logo: {
+    width: 180, // Adjust the size as needed
+    height: 180, // Adjust the size as needed
+    marginBottom: 20,
   }
 });
 
