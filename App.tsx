@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   Animated,
-  Image
+  Image,
+  Alert
 } from "react-native";
 
 interface AuthFormProps {
@@ -18,7 +19,7 @@ const App = () => {
   return (
     <View style={styles.container}>
       {isLoggedIn ? (
-        <MainScreen />
+        <MainScreen onLogout={() => setIsLoggedIn(false)} />
       ) : (
         <AuthForm onAuthentication={() => setIsLoggedIn(true)} />
       )}
@@ -35,6 +36,16 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthentication }) => {
   const [error, setError] = useState("");
 
 const handleSubmit = () => {
+  if (!password.trim()) {
+    Alert.alert("Error", "Please fill in the password.");
+    return;
+  }
+
+  // Check if name is filled (only required for signup)
+  if (!isLogin && !name.trim()) {
+    Alert.alert("Error", "Please fill in your name.");
+    return;
+  }
 
     // Regular expression for valid email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -103,8 +114,12 @@ const handleSubmit = () => {
     </View>
   );
 };
+// Define the type for MainScreen props
+interface MainScreenProps {
+  onLogout: () => void;
+}
 
-const MainScreen = () => {
+const MainScreen: React.FC<MainScreenProps> = ({ onLogout }) =>  {
   const [location, setLocation] = useState("");
   const [destination, setDestination] = useState("");
 
@@ -138,6 +153,9 @@ const MainScreen = () => {
   return (
     <View style={styles.mainContainer}>
       <Image source={require("./assets/logo.png")} style={styles.logo} />
+      <TouchableOpacity style={styles.logoutButton} onPress={onLogout}>
+        <Text style={styles.logoutButtonText}>Logout</Text>
+      </TouchableOpacity>
       <Animated.View
         style={[
           styles.box,
@@ -340,7 +358,27 @@ const styles = StyleSheet.create({
     width: 180, // Adjust the size as needed
     height: 180, // Adjust the size as needed
     marginBottom: 20,
-  }
+  },
+  logoutButton: {
+    position: "absolute",
+    top: 40, // Adjust the position as needed
+    right: 20, // Adjust the position as needed
+    padding: 10,
+    backgroundColor: "#4CAF50", // Match the theme's green color
+    borderRadius: 10, // Match the theme's border radius
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000", // Add shadow to match the theme
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3, // For Android shadow
+  },
+  logoutButtonText: {
+    color: "#FFFFFF", // White text to match the theme
+    fontSize: 14,
+    fontWeight: "600",
+  },
 });
 
 export default App;
