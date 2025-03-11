@@ -60,59 +60,62 @@ const handleSubmit = () => {
   onAuthentication(); // Proceed with authentication
 };
 
-  return (
-    <View style={styles.authContainer}>
-      <Image source={require("./assets/logo.png")} style={styles.logo} />
-      <Text style={styles.title}>SafePath AI</Text>
-      <View style={styles.authForm}>
-        <Text style={styles.headerText}>{isLogin ? "Login" : "Sign Up"}</Text>
-        <Text style={styles.subText}>
-          {isLogin ? "Log in to continue" : "Create a new account"}
-        </Text>
+return (
+  <View style={styles.authContainer}>
+    <Image source={require("./assets/logo.png")} style={styles.logo} />
 
-        {!isLogin && (
-          <TextInput
+    <View style={styles.authForm}>
+      <Text style={styles.headerText}>{isLogin ? "Login" : "Sign Up"}</Text>
+      <Text style={styles.subText}>
+        {isLogin ? "Log in to continue" : "Create a new account"}
+      </Text>
+
+      {!isLogin && (
+        <TextInput
           style={styles.input}
           placeholder="Name"
           value={name}
           onChangeText={setName}
           placeholderTextColor="#7D7D7D"
         />
-        )}
+      )}
 
-        <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            placeholderTextColor="#7D7D7D"
-          />
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        placeholderTextColor="#7D7D7D"
+      />
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
         
 
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          placeholderTextColor="#7D7D7D"
-          secureTextEntry
-        />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        placeholderTextColor="#7D7D7D"
+        secureTextEntry
+      />
 
-        <TouchableOpacity style={styles.authButton} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>{isLogin ? "Log In" : "Sign Up"}</Text>
-        </TouchableOpacity>
+      <TouchableOpacity style={styles.authButton} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>
+          {isLogin ? "Log In" : "Sign Up"}
+        </Text>
+      </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => setIsLogin(!isLogin)}>
-          <Text style={styles.switchText}>
-            {isLogin 
-              ? "Don't have an account? Sign Up"
-              : "Already have an account? Log In"}
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={() => setIsLogin(!isLogin)}>
+        <Text style={styles.switchText}>
+          {isLogin
+            ? "Don't have an account? Sign Up"
+            : "Already have an account? Log In"}
+        </Text>
+      </TouchableOpacity>
     </View>
-  );
+    <Text style={styles.title}>SafePath AI</Text>
+  </View>
+);
 };
 // Define the type for MainScreen props
 interface MainScreenProps {
@@ -153,8 +156,8 @@ const MainScreen: React.FC<MainScreenProps> = ({ onLogout }) =>  {
   return (
     <View style={styles.mainContainer}>
       <Image source={require("./assets/logo.png")} style={styles.logo} />
-      <TouchableOpacity style={styles.logoutButton} onPress={onLogout}>
-        <Text style={styles.logoutButtonText}>Logout</Text>
+      <TouchableOpacity style={styles.logoutButtonNew} onPress={onLogout} activeOpacity={0.8}>
+        <Text style={styles.logoutButtonTextNew}>Logout</Text>
       </TouchableOpacity>
       <Animated.View
         style={[
@@ -167,7 +170,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ onLogout }) =>  {
       >
         <Animated.View style={{ opacity: fadeAnimText }}>
           <Text style={styles.mainTitle}>
-            "No more fear,{"\n"}just safe path{"\n"}Ahead!"
+            "No more fear,{"\n"}just safe path{"\n"}ahead!"
           </Text>
         </Animated.View>
 
@@ -224,6 +227,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: 16,
+    backgroundColor: "#F8FBEF",
   },
   mainContainer: {
     flex: 1,
@@ -232,16 +237,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: "bold",
     color: "#2C3E50",
-    marginBottom: 40,
+    marginTop: 30,
   },
   authForm: {
-    width: "80%",
+    width: "85%",
     alignItems: "center",
     backgroundColor: "#FFFFFF",
-    padding: 20,
+    paddingVertical: 25,
+    paddingHorizontal: 20,
     borderRadius: 15,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
@@ -355,8 +361,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   logo: {
-    width: 180, // Adjust the size as needed
-    height: 180, // Adjust the size as needed
+    width: 160, // Adjust the size as needed
+    height: 160, // Adjust the size as needed
     marginBottom: 20,
   },
   logoutButton: {
@@ -379,6 +385,31 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
   },
+  logoutButtonNew: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#4CAF50', // Nice green color
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  
+  logoutButtonTextNew: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+  },
+  
 });
 
 export default App;
