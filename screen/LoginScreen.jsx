@@ -5,20 +5,44 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image
+  Image,
+  Alert,
+  ActivityIndicator
 } from "react-native";
+import { auth } from "../src/services/api";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
-    if (isLogin) {
-      console.log("Login attempt with:", { name, password });
-    } else {
-      console.log("Signup attempt with:", { name, email, password });
+  const handleSubmit = async () => {
+    if (!email || !password || (!isLogin && !name)) {
+      Alert.alert("Error", "Please fill in all required fields");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      if (isLogin) {
+        const response = await auth.login(email, password);
+        await AsyncStorage.setItem('token', response.access_token);
+        navigation.replace('Info');
+      } else {
+        await auth.signup(email, password, name);
+        Alert.alert("Success", "Account created successfully! Please login.");
+        setIsLogin(true);
+      }
+    } catch (error) {
+      Alert.alert(
+        "Error",
+        error.response?.data?.detail || "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,6 +76,8 @@ const LoginScreen = ({ navigation }) => {
             value={email}
             onChangeText={setEmail}
             placeholderTextColor="#7D7D7D"
+            keyboardType="email-address"
+            autoCapitalize="none"
           />
         )}
 
@@ -64,8 +90,18 @@ const LoginScreen = ({ navigation }) => {
           secureTextEntry
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText} onPress={() => navigation.replace('Info')} >{isLogin ? "Log In" : "Sign Up"}</Text>
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#FFFFFF" />
+          ) : (
+            <Text style={styles.buttonText}>
+              {isLogin ? "Log In" : "Sign Up"}
+            </Text>
+          )}
         </TouchableOpacity>
 
         {isLogin ? (
